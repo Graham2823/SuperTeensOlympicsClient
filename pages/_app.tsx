@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import '@/app/app.css'
 import { AppProps } from 'next/app'; // Import AppProps from Next.js
 import LeftNavBar from '../components/LeftNavBar'
+import 'react-datepicker/dist/react-datepicker.css';
 
 import { config } from 'dotenv';
 config();

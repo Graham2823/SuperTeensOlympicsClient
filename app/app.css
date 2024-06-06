@@ -1,4 +1,4 @@
-*{
+body{
     background-color: rgb(154, 95, 154);
 }
 
@@ -17,7 +17,7 @@
 
 .logoContainer{
     width: 60%;
-    margin: 25px auto 0px auto;
+    margin: auto;
 }
 
 .standingsTable{
@@ -28,4 +28,52 @@
 
 .olympicRingsImage{
     height: 150px;
+}
+
+.scheduleContainer{
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    margin: 25px auto;
+}
+
+.eventCard{
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: aliceblue;
+}
+
+.schedulePage {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+.schedulePage h2 {
+    margin: 0; /* Reset margin */
+    padding: 0; /* Reset padding */
+}
+
+.filterEvents{
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    margin: 20px auto;
+    background-color: aliceblue;
+    padding: 20px;
+}
+
+.filterGroup{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.filterEvents button{
+    width: 100px;
+    margin: 20px auto 0px auto;
 }

@@ -5,10 +5,10 @@ import "@/app/app.css";
 const LeftNavBar = ({}) => {
 
     return (
-            <Navbar expand="lg" className="leftNav" style={{float:'left', marginLeft:'100px'}}>
+            <Navbar expand="lg" className="leftNav" style={{position: 'fixed', left:'30px'}}>
                     <NavDropdown title={<span>SuperTeens</span>} id="basic-nav-dropdown">
                         <NavDropdown.Item href={`/`} className='sideNavDropdownOption'>Home</NavDropdown.Item>
-                        <NavDropdown.Item href={`/`} className='sideNavDropdownOption'>Schedule</NavDropdown.Item>
+                        <NavDropdown.Item href={`/schedule`} className='sideNavDropdownOption'>Schedule</NavDropdown.Item>
                         <NavDropdown.Item href={`/`} className='sideNavDropdownOption'>Admin</NavDropdown.Item>
                     </NavDropdown>
             </Navbar>
