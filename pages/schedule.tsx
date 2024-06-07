@@ -9,6 +9,7 @@ interface Event {
 	eventTeam1: string;
 	eventTeam2: string | null;
 	eventTime: string;
+    eventLocation: string;
 	eventWinner: string | null;
 }
 
@@ -150,13 +151,14 @@ const Schedule = () => {
 					schedule.map((event, index) => (
 						<div className='eventCard' key={index}>
 							<h2>{event.eventSport}</h2>
-							<h2>
+							<h3>
 								{formatDate(event.eventDate)} @ {event.eventTime}
-							</h2>
-							<h2>
+							</h3>
+							<h3>
 								{event.eventTeam1}{' '}
 								{event.eventTeam2 ? 'Vs ' + event.eventTeam2 : ''}
-							</h2>
+							</h3>
+                            <h5>Location: {event.eventLocation}</h5>
 						</div>
 					))}
 			</div>

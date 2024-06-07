@@ -44,6 +44,7 @@ body{
     justify-content: center;
     align-items: center;
     background-color: aliceblue;
+    margin: 10px;
 }
 
 .schedulePage {
@@ -76,4 +77,28 @@ body{
 .filterEvents button{
     width: 100px;
     margin: 20px auto 0px auto;
+}
+
+.eventForm{
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+    margin: auto;
+    border: 1px solid black;
+    position: relative;
+    top: 40px;
+  }
+
+.eventFormGroup {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+
+.eventFormGroup select, .eventFormGroup input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
 }
