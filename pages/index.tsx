@@ -29,8 +29,8 @@ const Index = () => {
     <div className='homePage'>
       <div>
         <div className='logoContainer'>
-        <Image src={'/olympicRings.png'} alt='olympic rings' className='olympicRingsImage'/>
-        <Image src={'/BCYFLogo.png'} alt='olympic rings' className='olympicRingsImage'/>
+        <Image src={'/olympicRings.png'} alt='olympic rings' className='logoImage'/>
+        <Image src={'/BCYFLogo.png'} alt='olympic rings' className='logoImage'/>
         </div>
         <h1>SuperTeens Olympics 2024</h1>
       </div>
