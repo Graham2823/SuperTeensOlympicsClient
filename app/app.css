@@ -2,9 +2,12 @@ body{
     background-color: rgb(154, 95, 154);
 }
 
-.leftNav{
+.leftNav {
     font-size: 30px;
     color: black;
+    position: fixed;
+    left: 30px;
+    z-index: 1000; /* Ensure it stays above other elements */
 }
 
 .homePage{
@@ -101,4 +104,82 @@ body{
     border: 1px solid #ccc;
     border-radius: 4px;
     transition: border-color 0.3s ease;
+}
+
+@media only screen and (max-width: 900px) {
+    .leftNav {
+        font-size: 20px;
+        top: 50px;
+    }
+}
+
+@media only screen and (max-width: 576px) {
+    .leftNav {
+        font-size: 15px;
+        position: fixed;
+    }
+}
+
+/* Adjustments for smaller screens */
+@media only screen and (max-width: 500px) {
+    .schedulePage {
+        padding: 10px;
+    }
+
+    .filterEvents {
+        margin-bottom: 20px;
+    }
+
+    .filterGroup {
+        margin-bottom: 10px;
+    }
+
+    .filterEvents h4 {
+        font-size: 1.2em;
+    }
+
+    .filterGroup label {
+        font-size: 1em;
+    }
+
+    select,
+    input,
+    button {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    .scheduleContainer {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .eventCard {
+        margin-bottom: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .eventCard h2 {
+        font-size: 1.5em;
+        margin-bottom: 5px;
+    }
+
+    .eventCard h3 {
+        font-size: 1.2em;
+        margin-bottom: 3px;
+    }
+
+    .eventCard h5 {
+        font-size: 1em;
+        margin-top: 5px;
+    }
+}
+
+@media only screen and (max-width: 450px) {
+    .leftNav {
+        position: relative;
+        top: 20px;
+    }
 }
