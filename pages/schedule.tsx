@@ -108,6 +108,7 @@ const Schedule = () => {
                 })
                 .catch((e) => {
                     console.log(e);
+                    toast.error("Could not filter. try Again!")
                 });
         } else if (!filteredDate && filteredCommunityCenter) {
             axios
@@ -120,6 +121,7 @@ const Schedule = () => {
                 })
                 .catch((e) => {
                     console.log(e);
+                    toast.error("Could not filter. try Again!")
                 });
         } else if (filteredDate && filteredCommunityCenter) {
             const formattedDate = filteredDate.toISOString().split('T')[0];
@@ -133,6 +135,7 @@ const Schedule = () => {
                 })
                 .catch((e) => {
                     console.log(e);
+                    toast.error("Could not filter. try Again!")
                 });
         }
     };
@@ -162,6 +165,7 @@ const Schedule = () => {
                 })
                 .catch((e) => {
                     console.log(e);
+                    toast.error("Could not filter. try Again!")
                 });
     }
 
@@ -215,9 +219,9 @@ const Schedule = () => {
                 {showingTodaysEvents ?(
                     <h2>Todays Events:</h2>
                 ): showingCommunityCentersEvents ?(
-                    <h2>{filteredCommunityCenter} events</h2>
+                    <h2>{filteredCommunityCenter} Events</h2>
                 ): showingEventsByDate ?(
-                    <h2>events on {formatDate(formattedFilteredDate)}</h2>
+                    <h2>Events on {formatDate(formattedFilteredDate)}</h2>
                 ): showingAllEvents ?(
                     <h2>All Events</h2>
                 ):(
