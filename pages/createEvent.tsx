@@ -3,6 +3,10 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
 import TimePicker from 'react-bootstrap-time-picker';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/router';
+
 
 const communityCenters = [
 	'BCYF Blackstone',
@@ -28,11 +32,12 @@ const communityCenters = [
 const CreateEvent = () => {
 	const [eventSport, setEventSport] = useState<string>('');
 	const [eventDate, setEventDate] = useState<Date | null>(null);
-	const [eventTime, setEventTime] = useState<string>('10 AM');
+	const [eventTime, setEventTime] = useState<string>('10:00 AM');
 	const [eventLocation, setEventLocation] = useState<string>('');
-	const [eventCommunityCenter1ID, setEventCommunityCenter1ID] = useState<string>('');
+	const [eventCommunityCenter1ID, setEventCommunityCenter1ID] = useState<string>('BCYF Blackstone');
 	const [eventCommunityCenter2ID, setEventCommunityCenter2ID] =
-		useState<string>('');
+		useState<string>('BCYF Blackstone');
+	const router = useRouter()
 
 	const handleCreateEvent = () => {
 		try {
@@ -50,6 +55,13 @@ const CreateEvent = () => {
 						.post(`http://localhost:8000/createEvent`, eventObject)
 						.then((response) => {
 							console.log(response.data);
+							toast.success("event Successfully created")
+							setEventSport('')
+							setEventDate(null)
+							setEventTime('10:00 AM')
+							setEventLocation('')
+							setEventCommunityCenter1ID("BCYF Blackstone")
+							setEventCommunityCenter2ID("BCYF Blackstone")
 						})
 						.catch((error) => {
 							console.error('Error fetching data:', error);
@@ -57,9 +69,11 @@ const CreateEvent = () => {
 								'Complete error object:',
 								error.response ? error.response.data : error
 							);
+							toast.error("Failed to create event. Try again!")
 						});
-				}
-		} catch (e) {
+					}
+				} catch (e) {
+			toast.error("Failed to create event. Try again!")
 			console.log(e);
 		}
 	};
@@ -81,6 +95,7 @@ const CreateEvent = () => {
 	};
 	return (
 		<div>
+			<ToastContainer/>
 	<div className='eventForm'>
 			<h4>Create an event</h4>
 			<div className='eventFormGroup'>

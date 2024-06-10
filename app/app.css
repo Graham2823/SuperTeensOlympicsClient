@@ -48,6 +48,14 @@ body{
     align-items: center;
     background-color: aliceblue;
     margin: 10px;
+    position: relative;
+}
+
+.deleteIcon {
+    position: absolute;
+    top: 10px; /* Adjust as needed */
+    right: 10px; /* Adjust as needed */
+    cursor: pointer;
 }
 
 .schedulePage {
@@ -155,6 +163,8 @@ body{
     .scheduleContainer {
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 
     .eventCard {
@@ -162,27 +172,27 @@ body{
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 5px;
+        width: 200px;
     }
 
     .eventCard h2 {
-        font-size: 1.5em;
+        font-size: 1.2em;
         margin-bottom: 5px;
     }
 
     .eventCard h3 {
-        font-size: 1.2em;
+        font-size: 1em;
         margin-bottom: 3px;
     }
 
     .eventCard h5 {
-        font-size: 1em;
+        font-size: .8em;
         margin-top: 5px;
     }
 }
 
 @media only screen and (max-width: 450px) {
     .leftNav {
-        position: relative;
-        top: 20px;
+        position: static;
     }
 }

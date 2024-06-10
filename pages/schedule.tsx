@@ -1,7 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import {faTrash} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { UserContext } from '@/context/userContext';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface Event {
     eventDate: string;
@@ -42,6 +47,8 @@ const Schedule = () => {
         string | null
     >(null);
     const [clearFilter, setClearFilter] = useState<boolean>(false);
+    const {user} = useContext(UserContext)
+    const [eventDeleted, setEventDeleted] = useState<boolean>(false)
 
     useEffect(() => {
         try {
@@ -52,6 +59,7 @@ const Schedule = () => {
                     setClearFilter(false);
                     setFilteredDate(null);
                     setFilteredCommunityCenter(null);
+                    setEventDeleted(false)
                 })
                 .catch((e) => {
                     console.log(e);
@@ -59,7 +67,7 @@ const Schedule = () => {
         } catch (e) {
             console.log('error getting community centers:', e);
         }
-    }, [clearFilter]);
+    }, [clearFilter, eventDeleted]);
 
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
@@ -103,12 +111,24 @@ const Schedule = () => {
                 });
         }
     };
+    
+    const deleteEvent = (eventID: number) =>{
+        axios
+                .delete(`http://localhost:8000/deleteEvent/${eventID}`)
+                .then((res) => {
+                    toast.success("Event Deleted")
+                    setEventDeleted(true)
+                })
+                .catch((e) => {
+                    console.log(e);
+                    toast.error("Could Not Delete Event. Try Again!")
+                });
+    }
 
-    console.log(filteredCommunityCenter);
-    console.log(filteredDate);
-    console.log(schedule);
+
     return (
         <div className='schedulePage'>
+            <ToastContainer/>
             <h2>SuperTeens Olympics 2024 Schedule</h2>
             <div className='filterEvents'>
                 <h4>Filter Events</h4>
@@ -150,6 +170,9 @@ const Schedule = () => {
                 {schedule.length > 0 &&
                     schedule.map((event, index) => (
                         <div className='eventCard' key={index}>
+                            {user && user.data.adminID && 
+                            <FontAwesomeIcon icon={faTrash} className='deleteIcon' onClick={()=>deleteEvent(event.eventID)}/>
+                            }
                             <h2>{event.eventSport}</h2>
                             <h3>
                                 {formatDate(event.eventDate)} @ {event.eventTime}
