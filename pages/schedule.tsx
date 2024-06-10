@@ -49,21 +49,38 @@ const Schedule = () => {
     const [clearFilter, setClearFilter] = useState<boolean>(false);
     const {user} = useContext(UserContext)
     const [eventDeleted, setEventDeleted] = useState<boolean>(false)
+    // Get the current date
+    const currentDate = new Date();
+    // Extract year, month, and day from the current date
+    const year = currentDate.getFullYear();
+    // January is 0, so we add 1 to get the correct month
+    const month = currentDate.getMonth() + 1;
+    const day = currentDate.getDate();
+    // Format the date in the desired format (year/month/day)
+    const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+    const [showingTodaysEvents, setShowingTodaysEvents] = useState<boolean>(true)
+    const [showingCommunityCentersEvents, setShowingCommunityCentersEvents]= useState<boolean>(false)
+    const [showingEventsByDate, setShowingEventsByDate]= useState<boolean>(false)
+    const [showingAllEvents, setShowingAllEvents] = useState<boolean>(false)
+    const [formattedFilteredDate, setFormattedFilteredDate] = useState<string>('')
+    console.log('date', formattedDate)
 
     useEffect(() => {
         try {
-            axios
-                .get('http://localhost:8000/getSchedule')
-                .then((res) => {
-                    setSchedule(res.data);
-                    setClearFilter(false);
-                    setFilteredDate(null);
-                    setFilteredCommunityCenter(null);
-                    setEventDeleted(false)
-                })
-                .catch((e) => {
-                    console.log(e);
-                });
+            if(formattedDate){
+                axios
+                    .get(`http://localhost:8000/eventsByDate/${formattedDate}`)
+                    .then((res) => {
+                        setSchedule(res.data);
+                        setClearFilter(false);
+                        setFilteredDate(null);
+                        setFilteredCommunityCenter(null);
+                        setEventDeleted(false)
+                    })
+                    .catch((e) => {
+                        console.log(e);
+                    });
+            }
         } catch (e) {
             console.log('error getting community centers:', e);
         }
@@ -77,12 +94,17 @@ const Schedule = () => {
     };
 
     const handleFilter = () => {
+        setShowingTodaysEvents(false)
         if (filteredDate && !filteredCommunityCenter) {
             const formattedDate = filteredDate.toISOString().split('T')[0]; // Extract the date part
+            setFormattedFilteredDate(formattedDate)
             axios
                 .get(`http://localhost:8000/eventsByDate/${formattedDate}`)
                 .then((res) => {
                     setSchedule(res.data);
+                    setShowingEventsByDate(true)
+                    setShowingAllEvents(false)
+                    setShowingCommunityCentersEvents(false)
                 })
                 .catch((e) => {
                     console.log(e);
@@ -92,6 +114,9 @@ const Schedule = () => {
                 .get(`http://localhost:8000/eventsBySite/${filteredCommunityCenter}`)
                 .then((res) => {
                     setSchedule(res.data);
+                    setShowingCommunityCentersEvents(true)
+                    setShowingAllEvents(false)
+                    setShowingEventsByDate(false)
                 })
                 .catch((e) => {
                     console.log(e);
@@ -122,6 +147,21 @@ const Schedule = () => {
                 .catch((e) => {
                     console.log(e);
                     toast.error("Could Not Delete Event. Try Again!")
+                });
+    }
+
+    const getAllEvents = () =>{
+        axios
+                .get(`http://localhost:8000/getSchedule`)
+                .then((res) => {
+                    setSchedule(res.data);
+                    setShowingAllEvents(true)
+                    setShowingCommunityCentersEvents(false)
+                    setShowingEventsByDate(false)
+                    setShowingTodaysEvents(false)
+                })
+                .catch((e) => {
+                    console.log(e);
                 });
     }
 
@@ -156,18 +196,35 @@ const Schedule = () => {
                         dateFormat='yyyy-MM-dd'
                     />
                 </div>
-                <button onClick={() => handleFilter()}>Find Events</button>
+                <button onClick={() => handleFilter()}>Filter Events</button>
                 <button
                     onClick={() => {
                         setClearFilter(true);
                         setFilteredCommunityCenter(null);
                         setFilteredDate(null);
+                        setShowingCommunityCentersEvents(false)
+                        setShowingEventsByDate(false)
+                        setShowingTodaysEvents(true)
+                        setShowingAllEvents(false)
                     }}>
                     Clear Filter
                 </button>
+                        <button onClick={()=> getAllEvents()}>Get All Events</button>
             </div>
             <div className='scheduleContainer'>
-                {schedule.length > 0 &&
+                {showingTodaysEvents ?(
+                    <h2>Todays Events:</h2>
+                ): showingCommunityCentersEvents ?(
+                    <h2>{filteredCommunityCenter} events</h2>
+                ): showingEventsByDate ?(
+                    <h2>events on {formatDate(formattedFilteredDate)}</h2>
+                ): showingAllEvents ?(
+                    <h2>All Events</h2>
+                ):(
+                    <h2></h2>
+                )
+                }
+                {schedule.length > 0 ?(
                     schedule.map((event, index) => (
                         <div className='eventCard' key={index}>
                             {user && user.data.adminID && 
@@ -183,7 +240,11 @@ const Schedule = () => {
                             </h3>
                             <h5>Location: {event.eventLocation}</h5>
                         </div>
-                    ))}
+                    ))
+                ):(
+                    <h2>{showingTodaysEvents ? "No Events Today" : showingEventsByDate ? `No Events on ${formatDate(formattedFilteredDate)}` : showingCommunityCentersEvents ? `${filteredCommunityCenter} has no events Scheduled` : ''}</h2>
+                )
+                    }
             </div>
         </div>
     );
