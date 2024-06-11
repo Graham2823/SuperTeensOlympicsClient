@@ -114,6 +114,11 @@ body{
     transition: border-color 0.3s ease;
 }
 
+.buttonContainer{
+    display: flex;
+    justify-content: center;
+}
+
 @media only screen and (max-width: 900px) {
     .leftNav {
         font-size: 20px;
@@ -194,5 +199,9 @@ body{
 @media only screen and (max-width: 450px) {
     .leftNav {
         position: static;
+    }
+    .buttonContainer{
+        display: flex;
+        flex-direction: column;
     }
 }

@@ -14,7 +14,7 @@ const LeftNavBar = ({}) => {
                         {user && user.data.adminID ? (
                             <>
                             <NavDropdown.Item href={`/createEvent`} className='sideNavDropdownOption'>Add Event</NavDropdown.Item>
-                            <NavDropdown.Item href={`/`} className='sideNavDropdownOption'>Update Score Board</NavDropdown.Item>
+                            <NavDropdown.Item href={`/updateScoreBoard`} className='sideNavDropdownOption'>Update Score Board</NavDropdown.Item>
                             </>
                         ):(
                             <NavDropdown.Item href={`/signin`} className='sideNavDropdownOption'>Admin</NavDropdown.Item>
