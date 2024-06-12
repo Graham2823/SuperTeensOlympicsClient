@@ -48,7 +48,7 @@ function SignIn() {
 	return (
 		<div className='signin'>
 			<ToastContainer />
-			<h2>Sign In</h2>
+			<h2>Admin Sign In</h2>
 			<div>
 			<input
 				type='email'
@@ -64,7 +64,6 @@ function SignIn() {
 			/>
 			</div>
 			<button onClick={handleSignInClick}>Sign In</button>
-            <p>Dont have an account?Sign up <Link href="/SignUp">Here</Link></p>
 		</div>
 	);
 }

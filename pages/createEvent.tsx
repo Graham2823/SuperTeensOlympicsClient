@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
@@ -6,6 +6,7 @@ import TimePicker from 'react-bootstrap-time-picker';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/router';
+import { UserContext } from '@/context/userContext';
 
 
 const communityCenters = [
@@ -38,6 +39,7 @@ const CreateEvent = () => {
 	const [eventCommunityCenter2ID, setEventCommunityCenter2ID] =
 		useState<string>('BCYF Blackstone');
 	const router = useRouter()
+	const {user} = useContext(UserContext)
 
 	const handleCreateEvent = () => {
 		try {
@@ -95,66 +97,77 @@ const CreateEvent = () => {
 	};
 	return (
 		<div>
-			<ToastContainer/>
-	<div className='eventForm'>
-			<h4>Create an event</h4>
-			<div className='eventFormGroup'>
-				<label>Event Sport</label>
-				<input
+		  {user && user.data.adminID ? (
+			<>
+			  <ToastContainer />
+			  <div className='eventForm'>
+				<h4>Create an event</h4>
+				<div className='eventFormGroup'>
+				  <label>Event Sport</label>
+				  <input
 					type='text'
 					value={eventSport}
-					onChange={(e) => setEventSport(e.target.value)}></input>
-			</div>
-			<div className='eventFormGroup'>
-				<label>Event Date</label>
-				<DatePicker
+					onChange={(e) => setEventSport(e.target.value)}
+				  />
+				</div>
+				<div className='eventFormGroup'>
+				  <label>Event Date</label>
+				  <DatePicker
 					selected={eventDate}
 					onChange={(date: Date) => setEventDate(date)}
 					placeholderText='Date'
 					dateFormat='yyyy-MM-dd'
-				/>
-			</div>
-			<div className='eventFormGroup'>
-				<label>Time</label>
-				<TimePicker
+				  />
+				</div>
+				<div className='eventFormGroup'>
+				  <label>Time</label>
+				  <TimePicker
 					start='10:00'
 					end='21:00'
 					step={30}
-                    value={eventTime}
+					value={eventTime}
 					onChange={handleStartTimeChange}
-				/>
-			</div>
-			<div className='eventFormGroup'>
-				<label>Event Location</label>
-				<input
+				  />
+				</div>
+				<div className='eventFormGroup'>
+				  <label>Event Location</label>
+				  <input
 					type='text'
 					value={eventLocation}
-					onChange={(e) => setEventLocation(e.target.value)}></input>
-			</div>
-			<div className='eventFormGroup'>
-				<label>Community Center 1</label>
-				<select onChange={(e)=> setEventCommunityCenter1ID(e.target.value)}>
-					{communityCenters.length > 0 && 
-					communityCenters.map((center, index)=>(
-						<option key={index} value={center}>{center}</option>
-					))
-					}
-				</select>
-			</div>
-			<div className='eventFormGroup'>
-				<label>Community Center 2</label>
-				<select onChange={(e)=> setEventCommunityCenter2ID(e.target.value)}>
-					{communityCenters.length > 0 && 
-					communityCenters.map((center, index)=>(
-						<option key={index} value={center}>{center}</option>
-					))
-					}
-				</select>
-			</div>
-			<button onClick={() => handleCreateEvent()}>Create Event</button>
+					onChange={(e) => setEventLocation(e.target.value)}
+				  />
+				</div>
+				<div className='eventFormGroup'>
+				  <label>Community Center 1</label>
+				  <select onChange={(e) => setEventCommunityCenter1ID(e.target.value)}>
+					{communityCenters.length > 0 &&
+					  communityCenters.map((center, index) => (
+						<option key={index} value={center}>
+						  {center}
+						</option>
+					  ))}
+				  </select>
+				</div>
+				<div className='eventFormGroup'>
+				  <label>Community Center 2</label>
+				  <select onChange={(e) => setEventCommunityCenter2ID(e.target.value)}>
+					{communityCenters.length > 0 &&
+					  communityCenters.map((center, index) => (
+						<option key={index} value={center}>
+						  {center}
+						</option>
+					  ))}
+				  </select>
+				</div>
+				<button onClick={() => handleCreateEvent()}>Create Event</button>
+			  </div>
+			</>
+		  ) : (
+			<h2 style={{textAlign:'center'}}>You Do Not Have Access To This Page. Return to Home Page!</h2>
+		  )}
 		</div>
-		</div>
-	);
+	  );
+	  
 };
 
 export default CreateEvent;
