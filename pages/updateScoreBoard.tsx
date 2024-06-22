@@ -18,7 +18,7 @@ const UpdateScoreBoard = () => {
   const {user} = useContext(UserContext)
   useEffect(() => {
     try {
-      axios.get('http://localhost:8000')
+      axios.get('https://superteensolympicsserver.onrender.com')
         .then((res) => {
           setStandings(res.data);
           setEditPoints(false)
@@ -36,7 +36,7 @@ const UpdateScoreBoard = () => {
 
 const updatePoints = (communityCenterName: string) =>{
       try {
-        axios.post(`http://localhost:8000/updatePoints/${communityCenterName}/${updatedPoints}`,)
+        axios.post(`https://superteensolympicsserver.onrender.com/updatePoints/${communityCenterName}/${updatedPoints}`,)
           .then((res) => {
             console.log(res.data)
             setSuccessfullyUpdated(true)
@@ -53,7 +53,7 @@ console.log(standings)
 console.log(editRow)
 return (
     <div className='homePage'>
-      {user && user.data.adminID ? (
+      {user && user.adminID ? (
         <div>
           <div className='logoContainer'>
             <Image src={'/olympicRings.png'} alt='olympic rings' className='logoImage' />

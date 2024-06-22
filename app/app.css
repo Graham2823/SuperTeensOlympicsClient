@@ -140,6 +140,19 @@ body {
     margin: auto;
 }
 
+.allEventsContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.allEventsContainer h4, button{
+    margin: 0px;
+    padding: 0px;
+}
+
 @media only screen and (max-width: 900px) {
 	.leftNav {
 		font-size: 20px;

@@ -13,7 +13,7 @@ const Index = () => {
 
   useEffect(() => { 
     try {
-      axios.get('http://localhost:8000')
+      axios.get('https://superteensolympicsserver.onrender.com')
         .then((res) => {
           setStandings(res.data);
         })

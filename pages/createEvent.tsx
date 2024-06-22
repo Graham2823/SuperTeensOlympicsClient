@@ -54,7 +54,7 @@ const CreateEvent = () => {
 				};
 				if (eventObject) {
 					axios
-						.post(`http://localhost:8000/createEvent`, eventObject)
+						.post(`https://superteensolympicsserver.onrender.com/createEvent`, eventObject)
 						.then((response) => {
 							console.log(response.data);
 							toast.success("event Successfully created")
@@ -97,7 +97,7 @@ const CreateEvent = () => {
 	};
 	return (
 		<div>
-		  {user && user.data.adminID ? (
+		  {user && user.adminID ? (
 			<>
 			  <ToastContainer />
 			  <div className='eventForm'>

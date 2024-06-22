@@ -11,7 +11,7 @@ const LeftNavBar = ({}) => {
                     <NavDropdown title={<span>SuperTeens</span>} id="basic-nav-dropdown">
                         <NavDropdown.Item href={`/`} className='sideNavDropdownOption'>Home</NavDropdown.Item>
                         <NavDropdown.Item href={`/schedule`} className='sideNavDropdownOption'>Schedule</NavDropdown.Item>
-                        {user && user.data.adminID ? (
+                        {user && user.adminID ? (
                             <>
                             <NavDropdown.Item href={`/createEvent`} className='sideNavDropdownOption'>Add Event</NavDropdown.Item>
                             <NavDropdown.Item href={`/updateScoreBoard`} className='sideNavDropdownOption'>Update Score Board</NavDropdown.Item>

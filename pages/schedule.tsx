@@ -69,7 +69,7 @@ const Schedule = () => {
         try {
             if(formattedDate){
                 axios
-                    .get(`http://localhost:8000/eventsByDate/${formattedDate}`)
+                    .get(`https://superteensolympicsserver.onrender.com/eventsByDate/${formattedDate}`)
                     .then((res) => {
                         setSchedule(res.data);
                         setClearFilter(false);
@@ -99,7 +99,7 @@ const Schedule = () => {
             const formattedDate = filteredDate.toISOString().split('T')[0]; // Extract the date part
             setFormattedFilteredDate(formattedDate)
             axios
-                .get(`http://localhost:8000/eventsByDate/${formattedDate}`)
+                .get(`https://superteensolympicsserver.onrender.com/eventsByDate/${formattedDate}`)
                 .then((res) => {
                     setSchedule(res.data);
                     setShowingEventsByDate(true)
@@ -112,7 +112,7 @@ const Schedule = () => {
                 });
         } else if (!filteredDate && filteredCommunityCenter) {
             axios
-                .get(`http://localhost:8000/eventsBySite/${filteredCommunityCenter}`)
+                .get(`https://superteensolympicsserver.onrender.com/eventsBySite/${filteredCommunityCenter}`)
                 .then((res) => {
                     setSchedule(res.data);
                     setShowingCommunityCentersEvents(true)
@@ -128,7 +128,7 @@ const Schedule = () => {
             console.log(formattedDate);
             axios
                 .get(
-                    `http://localhost:8000/eventsByDateAndCenter/${formattedDate}/${filteredCommunityCenter}`
+                    `https://superteensolympicsserver.onrender.com/eventsByDateAndCenter/${formattedDate}/${filteredCommunityCenter}`
                 )
                 .then((res) => {
                     setSchedule(res.data);
@@ -142,7 +142,7 @@ const Schedule = () => {
     
     const deleteEvent = (eventID: number) =>{
         axios
-                .delete(`http://localhost:8000/deleteEvent/${eventID}`)
+                .delete(`https://superteensolympicsserver.onrender.com/deleteEvent/${eventID}`)
                 .then((res) => {
                     toast.success("Event Deleted")
                     setEventDeleted(true)
@@ -155,7 +155,7 @@ const Schedule = () => {
 
     const getAllEvents = () =>{
         axios
-                .get(`http://localhost:8000/getSchedule`)
+                .get(`https://superteensolympicsserver.onrender.com/getSchedule`)
                 .then((res) => {
                     setSchedule(res.data);
                     setShowingAllEvents(true)
@@ -201,6 +201,10 @@ const Schedule = () => {
                     />
                 </div>
                 <button onClick={() => handleFilter()}>Filter Events</button>
+                <div className='allEventsContainer'>
+                        <h4>Or get all events:</h4>
+                        <button onClick={()=> getAllEvents()}>Get All Events</button>
+                </div>
                 <button
                     onClick={() => {
                         setClearFilter(true);
@@ -213,7 +217,6 @@ const Schedule = () => {
                     }}>
                     Clear Filter
                 </button>
-                        <button onClick={()=> getAllEvents()}>Get All Events</button>
             </div>
             <div className='scheduleContainer'>
                 {showingTodaysEvents ?(
@@ -231,7 +234,7 @@ const Schedule = () => {
                 {schedule.length > 0 ?(
                     schedule.map((event, index) => (
                         <div className='eventCard' key={index}>
-                            {user && user.data.adminID && 
+                            {user && user.adminID && 
                             <FontAwesomeIcon icon={faTrash} className='deleteIcon' onClick={()=>deleteEvent(event.eventID)}/>
                             }
                             <h2>{event.eventSport}</h2>
