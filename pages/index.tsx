@@ -11,6 +11,7 @@ interface CommunityCenter {
 const Index = () => {
   const [standings, setStandings] = useState<CommunityCenter[]>([]);
 
+  
   useEffect(() => { 
     try {
       axios.get('https://superteensolympicsserver.onrender.com')
