@@ -54,7 +54,7 @@ const CreateEvent = () => {
 				};
 				if (eventObject) {
 					axios
-						.post(`https://superteensolympicsserver.onrender.com/createEvent`, eventObject)
+						.post(`https://superteensolympicsserver-1.onrender.com/createEvent`, eventObject)
 						.then((response) => {
 							console.log(response.data);
 							toast.success("event Successfully created")

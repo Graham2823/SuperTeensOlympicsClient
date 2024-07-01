@@ -23,7 +23,7 @@ function SignIn() {
                 const userID = userCredential.user.uid;
 
                 axios
-                    .get(`https://superteensolympicsserver.onrender.com/signIn/${userID}`)
+                    .get(`https://superteensolympicsserver-1.onrender.com/signIn/${userID}`)
                     .then((response) => {
                         console.log(response.data)
                         const user = response.data

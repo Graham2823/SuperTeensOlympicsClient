@@ -69,7 +69,7 @@ const Schedule = () => {
         try {
             if(formattedDate){
                 axios
-                    .get(`https://superteensolympicsserver.onrender.com/eventsByDate/${formattedDate}`)
+                    .get(`https://superteensolympicsserver-1.onrender.com/eventsByDate/${formattedDate}`)
                     .then((res) => {
                         setSchedule(res.data);
                         setClearFilter(false);
@@ -99,7 +99,7 @@ const Schedule = () => {
             const formattedDate = filteredDate.toISOString().split('T')[0]; // Extract the date part
             setFormattedFilteredDate(formattedDate)
             axios
-                .get(`https://superteensolympicsserver.onrender.com/eventsByDate/${formattedDate}`)
+                .get(`https://superteensolympicsserver-1.onrender.com/eventsByDate/${formattedDate}`)
                 .then((res) => {
                     setSchedule(res.data);
                     setShowingEventsByDate(true)
@@ -112,7 +112,7 @@ const Schedule = () => {
                 });
         } else if (!filteredDate && filteredCommunityCenter) {
             axios
-                .get(`https://superteensolympicsserver.onrender.com/eventsBySite/${filteredCommunityCenter}`)
+                .get(`https://superteensolympicsserver-1.onrender.com/eventsBySite/${filteredCommunityCenter}`)
                 .then((res) => {
                     setSchedule(res.data);
                     setShowingCommunityCentersEvents(true)
@@ -128,7 +128,7 @@ const Schedule = () => {
             console.log(formattedDate);
             axios
                 .get(
-                    `https://superteensolympicsserver.onrender.com/eventsByDateAndCenter/${formattedDate}/${filteredCommunityCenter}`
+                    `https://superteensolympicsserver-1.onrender.com/eventsByDateAndCenter/${formattedDate}/${filteredCommunityCenter}`
                 )
                 .then((res) => {
                     setSchedule(res.data);
@@ -142,7 +142,7 @@ const Schedule = () => {
     
     const deleteEvent = (eventID: number) =>{
         axios
-                .delete(`https://superteensolympicsserver.onrender.com/deleteEvent/${eventID}`)
+                .delete(`https://superteensolympicsserver-1.onrender.com/deleteEvent/${eventID}`)
                 .then((res) => {
                     toast.success("Event Deleted")
                     setEventDeleted(true)
@@ -155,7 +155,7 @@ const Schedule = () => {
 
     const getAllEvents = () =>{
         axios
-                .get(`https://superteensolympicsserver.onrender.com/getSchedule`)
+                .get(`https://superteensolympicsserver-1.onrender.com/getSchedule`)
                 .then((res) => {
                     setSchedule(res.data);
                     setShowingAllEvents(true)
