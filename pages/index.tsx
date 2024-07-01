@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { Table , Image} from 'react-bootstrap'; // Correct import statement
-
+import { UserContext } from '@/context/userContext';
 
 interface CommunityCenter {
   'communityCenterName': string;
@@ -10,7 +10,7 @@ interface CommunityCenter {
 
 const Index = () => {
   const [standings, setStandings] = useState<CommunityCenter[]>([]);
-
+  const {user} = useContext(UserContext)
 
   useEffect(() => { 
     try {
@@ -25,6 +25,11 @@ const Index = () => {
       console.log("error getting community centers:", e);
     }
   }, []);
+
+  const downloadCSV = () => {
+    // Implement download logic here
+    window.open(`https://superteensolympicsserver-1.onrender.com/downloadCSV`);
+  };
 
   return (
     <div className='homePage'>
@@ -54,6 +59,9 @@ const Index = () => {
             ))}
           </tbody>
         </Table>
+      }
+      {user && user.adminID && 
+      <button onClick={()=>downloadCSV()}>Download Standings</button>
       }
     </div>
   );
