@@ -60,9 +60,9 @@ const Index = () => {
           </tbody>
         </Table>
       }
-      {user && user.adminID && 
+      {/* {user && user.adminID && 
       <button onClick={()=>downloadCSV()}>Download Standings</button>
-      }
+      } */}
     </div>
   );
 }
