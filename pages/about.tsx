@@ -14,8 +14,20 @@ const About = () => {
     For the 2024 season, SuperTeens will be hosted at 18 BCYF Sites! This year our program will focus on opportunities to enhance communication, collaboration, team work and problem solving.  
     </p>
     <p>
-    With the Paris Olympics this summer, we thought itd be great to take inspiration from that and put it towards SuperTeens. Our 18 different BCYF sites will serve as their own &quot;country&quot; or team, competing in games all summer long against other BCYF sites.
+    With the Paris Olympics this summer, we thought it would be great to take inspiration from that and put it towards SuperTeens. Our 18 different BCYF sites will serve as their own &quot;country&quot; or team, competing in games all summer long against other BCYF sites.
     </p>
+    <div style={{textAlign:'center'}}>
+        <h3>2024 SuperTeens Events:</h3>
+        <ul style={{listStylePosition:'outside', paddingLeft:'20px', width:'200px', margin:'auto', paddingBottom:'20px'}}>
+            <li>DodgeBall</li>
+            <li>PickleBall</li>
+            <li>Archery</li>
+            <li>Rowing</li>
+            <li>Water Carnival</li>
+            <li>Amazing Race</li>
+        </ul>
+    </div>
+    <p>Stay tuned to see who wins Gold in these events, and ends the summer as the 2024 SuperTeens Olympic Champions!</p>
     </div>
     
     

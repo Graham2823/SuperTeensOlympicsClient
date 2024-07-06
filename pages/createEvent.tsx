@@ -8,7 +8,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/router';
 import { UserContext } from '@/context/userContext';
 
-
 const communityCenters = [
 	'BCYF Blackstone',
 	'BCYF Condon',
@@ -35,47 +34,41 @@ const CreateEvent = () => {
 	const [eventDate, setEventDate] = useState<Date | null>(null);
 	const [eventTime, setEventTime] = useState<string>('10:00 AM');
 	const [eventLocation, setEventLocation] = useState<string>('');
-	const [eventCommunityCenter1ID, setEventCommunityCenter1ID] = useState<string>('BCYF Blackstone');
-	const [eventCommunityCenter2ID, setEventCommunityCenter2ID] =
-		useState<string>('BCYF Blackstone');
-	const router = useRouter()
-	const {user} = useContext(UserContext)
+	const [eventCommunityCenter1ID, setEventCommunityCenter1ID] = useState<string>('');
+	const [eventCommunityCenter2ID, setEventCommunityCenter2ID] = useState<string>('');
+	const router = useRouter();
+	const { user } = useContext(UserContext);
 
 	const handleCreateEvent = () => {
 		try {
-			
-				const eventObject = {
-					eventSport: eventSport,
-					eventDate: eventDate,
-					eventTime: eventTime,
-					eventLocation: eventLocation,
-					eventCommunityCenter1ID: eventCommunityCenter1ID,
-					eventCommunityCenter2ID: eventCommunityCenter2ID,
-				};
-				if (eventObject) {
-					axios
-						.post(`https://superteensolympicsserver-1.onrender.com/createEvent`, eventObject)
-						.then((response) => {
-							console.log(response.data);
-							toast.success("event Successfully created")
-							setEventSport('')
-							setEventDate(null)
-							setEventTime('10:00 AM')
-							setEventLocation('')
-							setEventCommunityCenter1ID("BCYF Blackstone")
-							setEventCommunityCenter2ID("BCYF Blackstone")
-						})
-						.catch((error) => {
-							console.error('Error fetching data:', error);
-							console.error(
-								'Complete error object:',
-								error.response ? error.response.data : error
-							);
-							toast.error("Failed to create event. Try again!")
-						});
-					}
-				} catch (e) {
-			toast.error("Failed to create event. Try again!")
+			const eventObject: any = {
+				eventSport: eventSport,
+				eventDate: eventDate,
+				eventTime: eventTime,
+				eventLocation: eventLocation,
+				eventCommunityCenter1ID: eventCommunityCenter1ID,
+			};
+			if (eventCommunityCenter2ID) {
+				eventObject.eventCommunityCenter2ID = eventCommunityCenter2ID;
+			}
+			axios
+				.post(`http://localhost:8000/createEvent`, eventObject)
+				.then((response) => {
+					console.log(response.data);
+					toast.success('Event Successfully Created');
+					setEventSport('');
+					setEventDate(null);
+					setEventTime('10:00 AM');
+					setEventLocation('');
+					setEventCommunityCenter1ID('');
+					setEventCommunityCenter2ID('');
+				})
+				.catch((error) => {
+					console.error('Error creating event:', error);
+					toast.error('Failed to create event. Try again!');
+				});
+		} catch (e) {
+			toast.error('Failed to create event. Try again!');
 			console.log(e);
 		}
 	};
@@ -95,79 +88,91 @@ const CreateEvent = () => {
 		const formattedMinutes = minutes.toString().padStart(2, '0'); // Add leading zero if needed
 		return `${formattedHours}:${formattedMinutes} ${ampm}`;
 	};
+
 	return (
 		<div>
-		  {user && user.adminID ? (
-			<>
-			  <ToastContainer />
-			  <div className='eventForm'>
-				<h4>Create an event</h4>
-				<div className='eventFormGroup'>
-				  <label>Event Sport</label>
-				  <input
-					type='text'
-					value={eventSport}
-					onChange={(e) => setEventSport(e.target.value)}
-				  />
-				</div>
-				<div className='eventFormGroup'>
-				  <label>Event Date</label>
-				  <DatePicker
-					selected={eventDate}
-					onChange={(date: Date) => setEventDate(date)}
-					placeholderText='Date'
-					dateFormat='yyyy-MM-dd'
-				  />
-				</div>
-				<div className='eventFormGroup'>
-				  <label>Time</label>
-				  <TimePicker
-					start='10:00'
-					end='21:00'
-					step={30}
-					value={eventTime}
-					onChange={handleStartTimeChange}
-				  />
-				</div>
-				<div className='eventFormGroup'>
-				  <label>Event Location</label>
-				  <input
-					type='text'
-					value={eventLocation}
-					onChange={(e) => setEventLocation(e.target.value)}
-				  />
-				</div>
-				<div className='eventFormGroup'>
-				  <label>Community Center 1</label>
-				  <select onChange={(e) => setEventCommunityCenter1ID(e.target.value)}>
-					{communityCenters.length > 0 &&
-					  communityCenters.map((center, index) => (
-						<option key={index} value={center}>
-						  {center}
-						</option>
-					  ))}
-				  </select>
-				</div>
-				<div className='eventFormGroup'>
-				  <label>Community Center 2</label>
-				  <select onChange={(e) => setEventCommunityCenter2ID(e.target.value)}>
-					{communityCenters.length > 0 &&
-					  communityCenters.map((center, index) => (
-						<option key={index} value={center}>
-						  {center}
-						</option>
-					  ))}
-				  </select>
-				</div>
-				<button onClick={() => handleCreateEvent()}>Create Event</button>
-			  </div>
-			</>
-		  ) : (
-			<h2 style={{textAlign:'center'}}>You Do Not Have Access To This Page. Return to Home Page!</h2>
-		  )}
+			{user && user.adminID ? (
+				<>
+					<ToastContainer />
+					<div className="eventForm">
+						<h4>Create an event</h4>
+						<div className="eventFormGroup">
+							<label>Event Sport</label>
+							<select value={eventSport} onChange={(e) => setEventSport(e.target.value)}>
+								<option value="">Select Event</option>
+								<option value="DodgeBall">DodgeBall</option>
+								<option value="PickleBall">PickleBall</option>
+								<option value="Archery">Archery</option>
+								<option value="Rowing">Rowing</option>
+								<option value="Water Carnival">Water Carnival</option>
+								<option value="Amazing Race">Amazing Race</option>
+							</select>
+						</div>
+						<div className="eventFormGroup">
+							<label>Event Date</label>
+							<DatePicker
+								selected={eventDate}
+								onChange={(date: Date) => setEventDate(date)}
+								placeholderText="Date"
+								dateFormat="yyyy-MM-dd"
+							/>
+						</div>
+						<div className="eventFormGroup">
+							<label>Time</label>
+							<TimePicker
+								start="10:00"
+								end="21:00"
+								step={30}
+								value={eventTime}
+								onChange={handleStartTimeChange}
+							/>
+						</div>
+						<div className="eventFormGroup">
+							<label>Event Location</label>
+							<input
+								type="text"
+								value={eventLocation}
+								onChange={(e) => setEventLocation(e.target.value)}
+							/>
+						</div>
+						<div className="eventFormGroup">
+							<label>Community Center 1</label>
+							<select
+								value={eventCommunityCenter1ID}
+								onChange={(e) => setEventCommunityCenter1ID(e.target.value)}
+							>
+								<option value="">Select Community Center</option>
+								{communityCenters.length > 0 &&
+									communityCenters.map((center, index) => (
+										<option key={index} value={center}>
+											{center}
+										</option>
+									))}
+							</select>
+						</div>
+						<div className="eventFormGroup">
+							<label>Community Center 2</label>
+							<select
+								value={eventCommunityCenter2ID}
+								onChange={(e) => setEventCommunityCenter2ID(e.target.value)}
+							>
+								<option value="">Select Community Center</option>
+								{communityCenters.length > 0 &&
+									communityCenters.map((center, index) => (
+										<option key={index} value={center}>
+											{center}
+										</option>
+									))}
+							</select>
+						</div>
+						<button onClick={() => handleCreateEvent()}>Create Event</button>
+					</div>
+				</>
+			) : (
+				<h2 style={{ textAlign: 'center' }}>You Do Not Have Access To This Page. Return to Home Page!</h2>
+			)}
 		</div>
-	  );
-	  
+	);
 };
 
 export default CreateEvent;

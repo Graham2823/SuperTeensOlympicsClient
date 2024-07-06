@@ -134,6 +134,11 @@ body {
 
 .aboutPage p{
     margin: 10px;
+	font-size: 1.2em;
+}
+
+.aboutPage li{
+	font-size: 1.2em;
 }
 
 .aboutPage img{
