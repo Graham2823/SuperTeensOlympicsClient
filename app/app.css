@@ -124,26 +124,28 @@ body {
 }
 
 .aboutPage {
-	display: flex;
-	flex-direction: column;
-	position: relative;
-	top: 60px;
-    width: 80%;
-    margin: auto;
-}
-
-.aboutPage p{
-    margin: 10px;
+	max-width: 800px;
+	margin: auto;
+	padding: 20px;
 	font-size: 1.2em;
+  }
+  
+  .aboutPage img {
+	width: 100%;
+	height: auto;
+	display: block;
+	margin: auto;
+	object-fit: cover; /* Ensure the image covers the area */
 }
-
-.aboutPage li{
-	font-size: 1.2em;
-}
-
-.aboutPage img{
-    margin: auto;
-}
+  
+  .aboutPage p {
+	text-align: justify;
+	font-size: 1em;
+  }
+  
+  .aboutPage h3 {
+	text-align: center;
+  }
 
 .allEventsContainer{
     display: flex;
@@ -158,10 +160,19 @@ body {
     padding: 0px;
 }
 
+@media only screen and (max-width: 1024px){
+	.aboutPage{
+		padding-top: 50px;
+	}
+}
+
 @media only screen and (max-width: 900px) {
 	.leftNav {
 		font-size: 20px;
 		top: 50px;
+	}
+	.aboutPage{
+		padding-top: 100px;
 	}
 }
 
@@ -182,6 +193,10 @@ body {
 
 /* Adjustments for smaller screens */
 @media only screen and (max-width: 500px) {
+	.aboutPage img {
+		max-width: 300px;
+	}
+
 	.schedulePage {
 		padding: 10px;
 	}
@@ -238,6 +253,9 @@ body {
 		font-size: 0.8em;
 		margin-top: 5px;
 	}
+	.aboutPage{
+		padding-top: 0px;
+	}
 }
 
 @media only screen and (max-width: 450px) {
@@ -248,4 +266,5 @@ body {
 		display: flex;
 		flex-direction: column;
 	}
+	
 }
