@@ -52,7 +52,7 @@ const CreateEvent = () => {
 				eventObject.eventCommunityCenter2ID = eventCommunityCenter2ID;
 			}
 			axios
-				.post(`http://localhost:8000/createEvent`, eventObject)
+				.post(`https://superteensolympicsserver-1.onrender.com/createEvent`, eventObject)
 				.then((response) => {
 					console.log(response.data);
 					toast.success('Event Successfully Created');
