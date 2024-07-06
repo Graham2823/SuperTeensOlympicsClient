@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import {faTrash} from '@fortawesome/free-solid-svg-icons'
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { UserContext } from '@/context/userContext';
 import { ToastContainer, toast } from 'react-toastify';
@@ -43,136 +43,112 @@ const communityCenters = [
 const Schedule = () => {
     const [schedule, setSchedule] = useState<Event[]>([]);
     const [filteredDate, setFilteredDate] = useState<Date | null>(null);
-    const [filteredCommunityCenter, setFilteredCommunityCenter] = useState<
-        string | null
-    >(null);
+    const [filteredCommunityCenter, setFilteredCommunityCenter] = useState<string | null>(null);
+    const [filteredEventSport, setFilteredEventSport] = useState<string | null>(null);
     const [clearFilter, setClearFilter] = useState<boolean>(false);
-    const {user} = useContext(UserContext)
-    const [eventDeleted, setEventDeleted] = useState<boolean>(false)
-    // Get the current date
-    const currentDate = new Date();
-    // Extract year, month, and day from the current date
-    const year = currentDate.getFullYear();
-    // January is 0, so we add 1 to get the correct month
-    const month = currentDate.getMonth() + 1;
-    const day = currentDate.getDate();
-    // Format the date in the desired format (year/month/day)
-    const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
     const [showingTodaysEvents, setShowingTodaysEvents] = useState<boolean>(true)
-    const [showingCommunityCentersEvents, setShowingCommunityCentersEvents]= useState<boolean>(false)
-    const [showingEventsByDate, setShowingEventsByDate]= useState<boolean>(false)
-    const [showingAllEvents, setShowingAllEvents] = useState<boolean>(false)
-    const [formattedFilteredDate, setFormattedFilteredDate] = useState<string>('')
-    console.log('date', formattedDate)
+    const { user } = useContext(UserContext);
+    const [eventDeleted, setEventDeleted] = useState<boolean>(false);
 
     useEffect(() => {
-        try {
-            if(formattedDate){
-                axios
-                    .get(`https://superteensolympicsserver-1.onrender.com/eventsByDate/${formattedDate}`)
-                    .then((res) => {
-                        setSchedule(res.data);
-                        setClearFilter(false);
-                        setFilteredDate(null);
-                        setFilteredCommunityCenter(null);
-                        setEventDeleted(false)
-                    })
-                    .catch((e) => {
-                        console.log(e);
-                    });
-            }
-        } catch (e) {
-            console.log('error getting community centers:', e);
-        }
+        fetchTodaysEvents();
+        setShowingTodaysEvents(true)
     }, [clearFilter, eventDeleted]);
 
-    const formatDate = (dateString: string) => {
-        const date = new Date(dateString);
-        const options = { timeZone: 'UTC' };
-        const formattedDate = date.toLocaleDateString('en-US', options);
-        return formattedDate;
+    const fetchEvents = (url: string) => {
+        axios.get(url)
+            .then((res) => {
+                setSchedule(res.data);
+                setShowingTodaysEvents(false)
+            })
+            .catch((e) => {
+                console.error('Error fetching events:', e);
+                toast.error('Could not fetch events. Please try again.');
+            });
+    };
+
+    const resetFilters = () => {
+        setFilteredDate(null);
+        setFilteredCommunityCenter(null);
+        setFilteredEventSport(null);
+        fetchTodaysEvents();
+        setClearFilter(true);
+        setShowingTodaysEvents(true)
     };
 
     const handleFilter = () => {
-        setShowingTodaysEvents(false)
-        if (filteredDate && !filteredCommunityCenter) {
-            const formattedDate = filteredDate.toISOString().split('T')[0]; // Extract the date part
-            setFormattedFilteredDate(formattedDate)
-            axios
-                .get(`https://superteensolympicsserver-1.onrender.com/eventsByDate/${formattedDate}`)
-                .then((res) => {
-                    setSchedule(res.data);
-                    setShowingEventsByDate(true)
-                    setShowingAllEvents(false)
-                    setShowingCommunityCentersEvents(false)
-                })
-                .catch((e) => {
-                    console.log(e);
-                    toast.error("Could not filter. try Again!")
-                });
-        } else if (!filteredDate && filteredCommunityCenter) {
-            axios
-                .get(`https://superteensolympicsserver-1.onrender.com/eventsBySite/${filteredCommunityCenter}`)
-                .then((res) => {
-                    setSchedule(res.data);
-                    setShowingCommunityCentersEvents(true)
-                    setShowingAllEvents(false)
-                    setShowingEventsByDate(false)
-                })
-                .catch((e) => {
-                    console.log(e);
-                    toast.error("Could not filter. try Again!")
-                });
+        let url = '';
+
+        if (filteredDate && filteredCommunityCenter && filteredEventSport) {
+            const formattedFilteredDate = formatDate(filteredDate.toISOString());
+            url = `http://localhost:8000/eventsByCenterAndEventAndDate/${filteredCommunityCenter}/${filteredEventSport}/${formattedFilteredDate}`;
         } else if (filteredDate && filteredCommunityCenter) {
-            const formattedDate = filteredDate.toISOString().split('T')[0];
-            console.log(formattedDate);
-            axios
-                .get(
-                    `https://superteensolympicsserver-1.onrender.com/eventsByDateAndCenter/${formattedDate}/${filteredCommunityCenter}`
-                )
-                .then((res) => {
-                    setSchedule(res.data);
-                })
-                .catch((e) => {
-                    console.log(e);
-                    toast.error("Could not filter. try Again!")
-                });
+            const formattedFilteredDate = formatDate(filteredDate.toISOString());
+            url = `http://localhost:8000/eventsByDateAndCenter/${formattedFilteredDate}/${filteredCommunityCenter}`;
+        } else if (filteredDate && filteredEventSport) {
+            const formattedFilteredDate = formatDate(filteredDate.toISOString());
+            url = `http://localhost:8000/eventsByDateAndEvent/${formattedFilteredDate}/${filteredEventSport}`;
+        } else if (filteredCommunityCenter && filteredEventSport) {
+            url = `http://localhost:8000/eventsByCenterAndEvent/${filteredCommunityCenter}/${filteredEventSport}`;
+        } else if (filteredDate) {
+            const formattedFilteredDate = formatDate(filteredDate.toISOString());
+            url = `http://localhost:8000/eventsByDate/${formattedFilteredDate}`;
+        } else if (filteredCommunityCenter) {
+            url = `http://localhost:8000/eventsBySite/${filteredCommunityCenter}`;
+        } else if (filteredEventSport) {
+            url = `http://localhost:8000/eventsByEvent/${filteredEventSport}`;
+        }
+
+        if (url) {
+            fetchEvents(url);
         }
     };
-    
-    const deleteEvent = (eventID: number) =>{
-        axios
-                .delete(`https://superteensolympicsserver-1.onrender.com/deleteEvent/${eventID}`)
-                .then((res) => {
-                    toast.success("Event Deleted")
-                    setEventDeleted(true)
-                })
-                .catch((e) => {
-                    console.log(e);
-                    toast.error("Could Not Delete Event. Try Again!")
-                });
-    }
 
-    const getAllEvents = () =>{
-        axios
-                .get(`https://superteensolympicsserver-1.onrender.com/getSchedule`)
-                .then((res) => {
-                    setSchedule(res.data);
-                    setShowingAllEvents(true)
-                    setShowingCommunityCentersEvents(false)
-                    setShowingEventsByDate(false)
-                    setShowingTodaysEvents(false)
-                })
-                .catch((e) => {
-                    console.log(e);
-                    toast.error("Could not filter. try Again!")
-                });
-    }
+    const fetchTodaysEvents = () => {
+        const currentDate = new Date();
+        const formattedDate = currentDate.toISOString().split('T')[0]; // format to yyyy-MM-dd
+        axios.get(`http://localhost:8000/eventsByDate/${formattedDate}`)
+            .then((res) => {
+                setSchedule(res.data);
+            })
+            .catch((e) => {
+                console.error('Error fetching events by date:', e);
+                toast.error('Could not fetch events for today. Please try again.');
+            });
+    };
 
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        return date.toISOString().split('T')[0]; // format to yyyy-MM-dd
+    };
+
+    const deleteEvent = (eventID: number) => {
+        axios.delete(`http://localhost:8000/deleteEvent/${eventID}`)
+            .then(() => {
+                toast.success('Event Deleted Successfully');
+                setEventDeleted(true);
+            })
+            .catch((e) => {
+                console.error('Error deleting event:', e);
+                toast.error('Could not delete event. Please try again.');
+            });
+    };
+
+    const getAllEvents = () => {
+        axios.get('http://localhost:8000/getSchedule')
+            .then((res) => {
+                setSchedule(res.data);
+                setShowingTodaysEvents(false)
+            })
+            .catch((e) => {
+                console.error('Error fetching all events:', e);
+                toast.error('Could not fetch all events. Please try again.');
+            });
+    };
 
     return (
         <div className='schedulePage'>
-            <ToastContainer/>
+            <ToastContainer />
             <h2>SuperTeens Olympics 2024 Schedule</h2>
             <div className='filterEvents'>
                 <h4>Filter Events</h4>
@@ -182,10 +158,10 @@ const Schedule = () => {
                         <select
                             value={filteredCommunityCenter || ''}
                             onChange={(e) => setFilteredCommunityCenter(e.target.value)}>
-                            <option>Community Center</option>
-                            {communityCenters.map((team, index) => (
-                                <option key={index} value={team}>
-                                    {team}
+                            <option value=''>All Community Centers</option>
+                            {communityCenters.map((center, index) => (
+                                <option key={index} value={center}>
+                                    {center}
                                 </option>
                             ))}
                         </select>
@@ -196,62 +172,48 @@ const Schedule = () => {
                     <DatePicker
                         selected={filteredDate}
                         onChange={(date: Date) => setFilteredDate(date)}
-                        placeholderText='Date'
+                        placeholderText='Select Date'
                         dateFormat='yyyy-MM-dd'
                     />
                 </div>
-                <button onClick={() => handleFilter()}>Filter Events</button>
-                <div className='allEventsContainer'>
-                        <h4>Or get all events:</h4>
-                        <button onClick={()=> getAllEvents()}>Get All Events</button>
+                <div className='filterGroup'>
+                    <label>Filter By Event Sport</label>
+                    <select
+                        value={filteredEventSport || ''}
+                        onChange={(e) => setFilteredEventSport(e.target.value)}>
+                        <option value=''>All Events</option>
+                        <option value='DodgeBall'>DodgeBall</option>
+                        <option value='PickleBall'>PickleBall</option>
+                        <option value='Archery'>Archery</option>
+                        <option value='Rowing'>Rowing</option>
+                        <option value='Water Carnival'>Water Carnival</option>
+                        <option value='Amazing Race'>Amazing Race</option>
+                    </select>
                 </div>
-                <button
-                    onClick={() => {
-                        setClearFilter(true);
-                        setFilteredCommunityCenter(null);
-                        setFilteredDate(null);
-                        setShowingCommunityCentersEvents(false)
-                        setShowingEventsByDate(false)
-                        setShowingTodaysEvents(true)
-                        setShowingAllEvents(false)
-                    }}>
-                    Clear Filter
-                </button>
+                <button onClick={handleFilter}>Filter Events</button>
+                <div className='allEventsContainer'>
+                    <h4>Or get all events:</h4>
+                    <button onClick={getAllEvents}>Get All Events</button>
+                </div>
+                <button onClick={resetFilters}>Clear Filters</button>
             </div>
             <div className='scheduleContainer'>
-                {showingTodaysEvents ?(
-                    <h2>Todays Events:</h2>
-                ): showingCommunityCentersEvents ?(
-                    <h2>{filteredCommunityCenter} Events</h2>
-                ): showingEventsByDate ?(
-                    <h2>Events on {formatDate(formattedFilteredDate)}</h2>
-                ): showingAllEvents ?(
-                    <h2>All Events</h2>
-                ):(
-                    <h2></h2>
-                )
-                }
-                {schedule.length > 0 ?(
-                    schedule.map((event, index) => (
-                        <div className='eventCard' key={index}>
-                            {user && user.adminID && 
-                            <FontAwesomeIcon icon={faTrash} className='deleteIcon' onClick={()=>deleteEvent(event.eventID)}/>
-                            }
-                            <h2>{event.eventSport}</h2>
-                            <h3>
-                                {formatDate(event.eventDate)} @ {event.eventTime}
-                            </h3>
-                            <h3>
-                                {event.eventTeam1}{' '}
-                                {event.eventTeam2 ? 'Vs ' + event.eventTeam2 : ''}
-                            </h3>
-                            <h5>Location: {event.eventLocation}</h5>
-                        </div>
-                    ))
-                ):(
-                    <h2>{showingTodaysEvents ? "No Events Today" : showingEventsByDate ? `No Events on ${formatDate(formattedFilteredDate)}` : showingCommunityCentersEvents ? `${filteredCommunityCenter} has no events Scheduled` : ''}</h2>
-                )
-                    }
+                <h2>{schedule.length === 0 && showingTodaysEvents ? 'No Events Today' : schedule.length > 0 && showingTodaysEvents ? 'Todays Events': schedule.length === 0 ? 'No Events Found Given Filtered Settings': 'Events'}</h2>
+                {schedule.map((event, index) => (
+                    <div className='eventCard' key={index}>
+                        {user && user.adminID && (
+                            <FontAwesomeIcon
+                                icon={faTrash}
+                                className='deleteIcon'
+                                onClick={() => deleteEvent(event.eventID)}
+                            />
+                        )}
+                        <h2>{event.eventSport}</h2>
+                        <h3>{formatDate(event.eventDate)} @ {event.eventTime}</h3>
+                        <h3>{event.eventTeam1} {event.eventTeam2 ? "vs. " + event.eventTeam2 : ''}</h3>
+                        <h5>Location: {event.eventLocation}</h5>
+                    </div>
+                ))}
             </div>
         </div>
     );

@@ -266,5 +266,20 @@ body {
 		display: flex;
 		flex-direction: column;
 	}
+	.filterEvents {
+		display: flex;
+		flex-direction: column;
+		width: 80%;
+		margin: 20px auto;
+		background-color: aliceblue;
+		padding: 20px;
+	}
+	
+	.filterGroup {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
 	
 }
