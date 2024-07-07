@@ -81,22 +81,22 @@ const Schedule = () => {
 
         if (filteredDate && filteredCommunityCenter && filteredEventSport) {
             const formattedFilteredDate = formatDate(filteredDate.toISOString());
-            url = `http://localhost:8000/eventsByCenterAndEventAndDate/${filteredCommunityCenter}/${filteredEventSport}/${formattedFilteredDate}`;
+            url = `https://superteensolympicsserver-1.onrender.com/eventsByCenterAndEventAndDate/${filteredCommunityCenter}/${filteredEventSport}/${formattedFilteredDate}`;
         } else if (filteredDate && filteredCommunityCenter) {
             const formattedFilteredDate = formatDate(filteredDate.toISOString());
-            url = `http://localhost:8000/eventsByDateAndCenter/${formattedFilteredDate}/${filteredCommunityCenter}`;
+            url = `https://superteensolympicsserver-1.onrender.com/eventsByDateAndCenter/${formattedFilteredDate}/${filteredCommunityCenter}`;
         } else if (filteredDate && filteredEventSport) {
             const formattedFilteredDate = formatDate(filteredDate.toISOString());
-            url = `http://localhost:8000/eventsByDateAndEvent/${formattedFilteredDate}/${filteredEventSport}`;
+            url = `https://superteensolympicsserver-1.onrender.com/eventsByDateAndEvent/${formattedFilteredDate}/${filteredEventSport}`;
         } else if (filteredCommunityCenter && filteredEventSport) {
-            url = `http://localhost:8000/eventsByCenterAndEvent/${filteredCommunityCenter}/${filteredEventSport}`;
+            url = `https://superteensolympicsserver-1.onrender.com/eventsByCenterAndEvent/${filteredCommunityCenter}/${filteredEventSport}`;
         } else if (filteredDate) {
             const formattedFilteredDate = formatDate(filteredDate.toISOString());
-            url = `http://localhost:8000/eventsByDate/${formattedFilteredDate}`;
+            url = `https://superteensolympicsserver-1.onrender.com/eventsByDate/${formattedFilteredDate}`;
         } else if (filteredCommunityCenter) {
-            url = `http://localhost:8000/eventsBySite/${filteredCommunityCenter}`;
+            url = `https://superteensolympicsserver-1.onrender.com/eventsBySite/${filteredCommunityCenter}`;
         } else if (filteredEventSport) {
-            url = `http://localhost:8000/eventsByEvent/${filteredEventSport}`;
+            url = `https://superteensolympicsserver-1.onrender.com/eventsByEvent/${filteredEventSport}`;
         }
 
         if (url) {
@@ -107,7 +107,7 @@ const Schedule = () => {
     const fetchTodaysEvents = () => {
         const currentDate = new Date();
         const formattedDate = currentDate.toISOString().split('T')[0]; // format to yyyy-MM-dd
-        axios.get(`http://localhost:8000/eventsByDate/${formattedDate}`)
+        axios.get(`https://superteensolympicsserver-1.onrender.com/eventsByDate/${formattedDate}`)
             .then((res) => {
                 setSchedule(res.data);
             })
@@ -123,7 +123,7 @@ const Schedule = () => {
     };
 
     const deleteEvent = (eventID: number) => {
-        axios.delete(`http://localhost:8000/deleteEvent/${eventID}`)
+        axios.delete(`https://superteensolympicsserver-1.onrender.com/deleteEvent/${eventID}`)
             .then(() => {
                 toast.success('Event Deleted Successfully');
                 setEventDeleted(true);
@@ -135,7 +135,7 @@ const Schedule = () => {
     };
 
     const getAllEvents = () => {
-        axios.get('http://localhost:8000/getSchedule')
+        axios.get('https://superteensolympicsserver-1.onrender.com/getSchedule')
             .then((res) => {
                 setSchedule(res.data);
                 setShowingTodaysEvents(false)
