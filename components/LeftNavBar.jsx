@@ -4,7 +4,7 @@ import "@/app/app.css";
 import { UserContext } from '@/context/userContext';
 
 const LeftNavBar = ({}) => {
-    const {user} = useContext(UserContext)
+    const {user, handleSignout} = useContext(UserContext)
 
     return (
             <Navbar expand="lg" className="leftNav">
@@ -16,6 +16,7 @@ const LeftNavBar = ({}) => {
                             <>
                             <NavDropdown.Item href={`/createEvent`} className='sideNavDropdownOption'>Add Event</NavDropdown.Item>
                             <NavDropdown.Item href={`/updateScoreBoard`} className='sideNavDropdownOption'>Update Score Board</NavDropdown.Item>
+                            <NavDropdown.Item onClick={()=>handleSignout()} className='sideNavDropdownOption'>Sign Out</NavDropdown.Item>
                             </>
                         )}
                     </NavDropdown>

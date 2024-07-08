@@ -51,7 +51,7 @@ export const UserProvider = ({ children }) => {
     console.log("hit")
     try {
       await signOut(auth);
-      router.push('/SignIn')
+      router.push('/signin')
       localStorage.removeItem('user');
       setUser(null);
       console.log('Successfully signed out');

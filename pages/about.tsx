@@ -20,7 +20,8 @@ const About = () => {
         <h3>2024 SuperTeens Events:</h3>
         <ul style={{listStylePosition:'outside', paddingLeft:'20px', width:'200px', margin:'auto', paddingBottom:'20px'}}>
             <li>DodgeBall</li>
-            <li>PickleBall</li>
+            <li>KickBall</li>
+            <li>5K</li>
             <li>Archery</li>
             <li>Rowing</li>
             <li>Water Carnival</li>

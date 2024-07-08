@@ -24,7 +24,7 @@ const communityCenters = [
 	'BCYF Perkins',
 	'BCYF Pino',
 	'BCYF Roche',
-	'BCYF Roslindale/Ohrenberger',
+	'BCYF Roslindale & Ohrenberger',
 	'BCYF Tynan',
 	'BCYF Vine Street',
 ];
@@ -101,7 +101,8 @@ const CreateEvent = () => {
 							<select value={eventSport} onChange={(e) => setEventSport(e.target.value)}>
 								<option value="">Select Event</option>
 								<option value="DodgeBall">DodgeBall</option>
-								<option value="PickleBall">PickleBall</option>
+								<option value="KickBall">KickBall</option>
+								<option value="5K">5K</option>
 								<option value="Archery">Archery</option>
 								<option value="Rowing">Rowing</option>
 								<option value="Water Carnival">Water Carnival</option>
@@ -142,6 +143,7 @@ const CreateEvent = () => {
 								onChange={(e) => setEventCommunityCenter1ID(e.target.value)}
 							>
 								<option value="">Select Community Center</option>
+								<option value="All Sites">All Sites</option>
 								{communityCenters.length > 0 &&
 									communityCenters.map((center, index) => (
 										<option key={index} value={center}>
