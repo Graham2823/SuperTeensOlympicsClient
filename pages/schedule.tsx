@@ -207,10 +207,10 @@ const Schedule = () => {
 					</select>
 				</div>
 				<button onClick={handleFilter}>Filter Events</button>
-				<div className='allEventsContainer'>
+				{/* <div className='allEventsContainer'>
 					<h4>Or get all events:</h4>
 					<button onClick={getAllEvents}>Get All Events</button>
-				</div>
+				</div> */}
 				<button onClick={resetFilters}>Clear Filters</button>
 			</div>
 			<div className='scheduleContainer'>
