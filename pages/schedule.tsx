@@ -43,16 +43,13 @@ const communityCenters = [
 const Schedule = () => {
 	const [schedule, setSchedule] = useState<Event[]>([]);
 	const [filteredDate, setFilteredDate] = useState<Date | null>(null);
-	const [filteredCommunityCenter, setFilteredCommunityCenter] = useState<
-		string | null
-	>(null);
-	const [filteredEventSport, setFilteredEventSport] = useState<string | null>(
-		null
-	);
+	const [filteredCommunityCenter, setFilteredCommunityCenter] = useState<string | null>(null);
+	const [filteredEventSport, setFilteredEventSport] = useState<string | null>(null);
 	const [clearFilter, setClearFilter] = useState<boolean>(false);
 	const [showingTodaysEvents, setShowingTodaysEvents] = useState<boolean>(true);
 	const { user } = useContext(UserContext);
 	const [eventDeleted, setEventDeleted] = useState<boolean>(false);
+	const [showOldEvents, setShowOldEvents] = useState<boolean>(false);
 
 	useEffect(() => {
 		fetchTodaysEvents();
@@ -157,7 +154,13 @@ const Schedule = () => {
 				toast.error('Could not fetch all events. Please try again.');
 			});
 	};
-    console.log(schedule)
+
+	const filteredEvents = schedule.filter((event) => {
+		const currentDate = new Date();
+		const eventDate = new Date(event.eventDate);
+		return showOldEvents || eventDate >= currentDate;
+	});
+
 	return (
 		<div className='schedulePage'>
 			<ToastContainer />
@@ -204,23 +207,28 @@ const Schedule = () => {
 					</select>
 				</div>
 				<button onClick={handleFilter}>Filter Events</button>
-				<div className='allEventsContainer'>
+				{/* <div className='allEventsContainer'>
 					<h4>Or get all events:</h4>
 					<button onClick={getAllEvents}>Get All Events</button>
-				</div>
+				</div> */}
 				<button onClick={resetFilters}>Clear Filters</button>
 			</div>
 			<div className='scheduleContainer'>
 				<h2>
-					{schedule.length === 0 && showingTodaysEvents
+					{filteredEvents.length === 0 && showingTodaysEvents
 						? 'No Events Today'
-						: schedule.length > 0 && showingTodaysEvents
+						 : filteredEvents.length > 0 && showingTodaysEvents
 						? 'Todays Events'
-						: schedule.length === 0
+						: filteredEvents.length === 0
 						? 'No Events Found Given Filtered Settings'
 						: 'Events'}
 				</h2>
-				{schedule.map((event, index) => (
+                {!showingTodaysEvents && 
+				<button onClick={() => setShowOldEvents((prev) => !prev)} style={{width: "100px", height:'50px',margin:'auto'}}>
+					{showOldEvents ? 'Hide' : 'Show'} Old Events
+				</button>
+                }
+				{filteredEvents.map((event, index) => (
 					<div className='eventCard' key={index}>
 						{user && user.adminID && (
 							<FontAwesomeIcon
