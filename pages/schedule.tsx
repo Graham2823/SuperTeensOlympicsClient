@@ -156,9 +156,14 @@ const Schedule = () => {
 	};
 
 	const filteredEvents = schedule.filter((event) => {
-		const currentDate = new Date();
-		const eventDate = new Date(event.eventDate);
-		return showOldEvents || eventDate >= currentDate;
+		const currentDate = new Date().toISOString().split('T')[0];
+		const eventDate = new Date(event.eventDate).toISOString().split('T')[0];
+		// Include events if:
+		// - showOldEvents is true (include all events)
+		// - or the event date is today
+        console.log("current date", currentDate)
+        console.log("event date", eventDate)
+		return showOldEvents || eventDate === currentDate || eventDate > currentDate;
 	});
 
 	return (
@@ -207,10 +212,6 @@ const Schedule = () => {
 					</select>
 				</div>
 				<button onClick={handleFilter}>Filter Events</button>
-				{/* <div className='allEventsContainer'>
-					<h4>Or get all events:</h4>
-					<button onClick={getAllEvents}>Get All Events</button>
-				</div> */}
 				<button onClick={resetFilters}>Clear Filters</button>
 			</div>
 			<div className='scheduleContainer'>
