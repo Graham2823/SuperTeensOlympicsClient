@@ -39,7 +39,7 @@ const Index = () => {
         <Image src={'/BCYFLogo.png'} alt='olympic rings' className='logoImage'/>
         </div>
         <h1>SuperTeens Olympics 2024</h1>
-        <h3>NOTE- These our not the final standings. We are still adding a few more things!</h3>
+        <h3>NOTE- These are not the final standings. We are still adding a few more things!</h3>
       </div>
       {standings.length > 0 &&
         <Table striped hover className='standingsTable'>
